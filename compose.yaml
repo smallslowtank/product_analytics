@@ -1,0 +1,37 @@
+services:
+
+  postgresql:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: request
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    ports:
+      - 5433:5432
+    networks:
+      - backend
+
+  pgadmin4:
+    image: elestio/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: bot@bot.bot
+      PGADMIN_DEFAULT_PASSWORD: bot
+      PGADMIN_LISTEN_PORT: 8080
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    ports:
+      - 8080:8080
+    networks:
+      - backend
+
+networks:
+
+  backend:
