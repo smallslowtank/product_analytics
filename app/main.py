@@ -5,22 +5,37 @@ from queries import *
 
 # create_tables()
 
+print('---***---')
 ar = select_count()
 print(f"Всего запросов в базе: {ar}")
 
-# n = int(input('Enter id: '))
-# q = select_id(n)
-# print(q)
-# for i in q:
-#     print(i)
+print('---***---')
+start = select_min_date()
+stop = select_max_date()
+print(f"Начало периода: {start}\nКонец периода: {stop}")
+print("Местное время хоста, на котором выполняется скрипт.")
+
+print('---***---')
+print(f'Количество запросов ТОЛЬКО с "ютуб":')
+res = select_only_youtube()
+for i in res:
+    print(i)
+
+print('---***---')
+res = select_only_youtube_touch()
+print(f'Проверка. На тачах: {res}')
+
+print('---***---')
+print(f'Количество запросов НА ТЕМУ "ютуб":')
+res = select_all_youtube()
+for i in res:
+    print(i)
+
+print('---***---')
+res = select_all_youtube_desktop()
+print(f'Проверка. На десктопах: {res}')
 
 
-sd = select_min_date()
-print(f"Start_date: {sd}")
-ed = select_max_date()
-print(f"End_date: {ed}")
 
-ytd = select_youtube_desktop()
-print(f"Request 'ютуб' or 'Ютуб' on desktop: {ytd}")
-ytt = select_youtube_touch()
-print(f"Request 'ютуб' or 'Ютуб' on touch: {ytt}")
+
+print('---***---')

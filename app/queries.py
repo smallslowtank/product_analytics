@@ -58,11 +58,13 @@ def select_max_date():
         return res.scalar()
 
 
-def select_youtube_desktop():
+def select_all_youtube_desktop():
     """
-    Поиск строк, содержащих слово "ютуб" (или Ютуб) в запросах на десктопах
+    Пример запроса для проверки:
+    Поиск запросов НА ТЕМУ "ютуб" ТОЛЬКО на десктопах
         SELECT COUNT(*) FROM yandex_images
         WHERE request LIKE '%ютуб%' OR request LIKE '%Ютуб%'
+        OR request LIKE '%youtu%' OR request LIKE '%Youtu%' OR request LIKE '%YouTu%'
         GROUP BY platform
         HAVING platform='desktop'
     """
@@ -71,6 +73,7 @@ def select_youtube_desktop():
             text(
                 "SELECT COUNT(*) FROM yandex_images \
                 WHERE request LIKE '%ютуб%' OR request LIKE '%Ютуб%' \
+                OR request LIKE '%youtu%' OR request LIKE '%Youtu%' OR request LIKE '%YouTu%' \
                 GROUP BY platform \
                 HAVING platform='desktop'"
             )
@@ -78,11 +81,12 @@ def select_youtube_desktop():
         return res.scalar()
 
 
-def select_youtube_touch():
+def select_only_youtube_touch():
     """
-    Поиск строк, содержащих слово "ютуб" (или Ютуб) в запросах на тачах
+    Пример запроса для проверки:
+    Поиск строк, содержащих ТОЛЬКО "ютуб" в запросах ТОЛЬКО на тачах
         SELECT COUNT(*) FROM yandex_images
-        WHERE request LIKE '%ютуб%' OR request LIKE '%Ютуб%'
+        WHERE request LIKE '%ютуб%'
         GROUP BY platform
         HAVING platform='touch'
     """
@@ -90,9 +94,55 @@ def select_youtube_touch():
         res = conn.execute(
             text(
                 "SELECT COUNT(*) FROM yandex_images \
-                WHERE request LIKE '%ютуб%' OR request LIKE '%Ютуб%' \
+                WHERE request LIKE '%ютуб%' \
                 GROUP BY platform \
                 HAVING platform='touch'"
             )
         )
         return res.scalar()
+
+
+def select_only_youtube():
+    """
+    Количество запросов (строка request), содержащих ТОЛЬКО слово "ютуб" на всех платформах
+        SELECT platform, COUNT(request) AS count_request
+        FROM yandex_images
+        WHERE request LIKE '%ютуб%'
+        GROUP BY platform
+        ORDER BY count_request DESC
+    """
+    with sync_engine.connect() as conn:
+        res = conn.execute(
+            text(
+                "SELECT platform, COUNT(request) AS count_request \
+                FROM yandex_images \
+                WHERE request LIKE '%ютуб%' \
+                GROUP BY platform \
+                ORDER BY count_request DESC"
+            )
+        )
+        return res.all()
+
+
+def select_all_youtube():
+    """
+    Количество запросов (строка request) НА ТЕМУ "ютуб" на всех платформах
+        SELECT platform, COUNT(request) AS count_request
+        FROM yandex_images
+        WHERE (request LIKE '%ютуб%' OR request LIKE '%Ютуб%'
+        OR request LIKE '%youtu%' OR request LIKE '%Youtu%' OR request LIKE '%YouTu%')
+        GROUP BY platform
+        ORDER BY count_request DESC
+    """
+    with sync_engine.connect() as conn:
+        res = conn.execute(
+            text(
+                "SELECT platform, COUNT(request) AS count_request \
+                FROM yandex_images \
+                WHERE (request LIKE '%ютуб%' OR request LIKE '%Ютуб%' \
+                OR request LIKE '%youtu%' OR request LIKE '%Youtu%' OR request LIKE '%YouTu%') \
+                GROUP BY platform \
+                ORDER BY count_request DESC"
+            )
+        )
+        return res.all()
