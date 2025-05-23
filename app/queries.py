@@ -156,7 +156,7 @@ def top10_request_touch():
 
 def top10_request_desktop():
     """
-    Топ 10 запросов на тачах
+    Топ 10 запросов на десктопах
         SELECT COUNT (request) AS count_request, request, platform
         FROM yandex_images
         WHERE platform='desktop'
