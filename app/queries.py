@@ -128,3 +128,51 @@ def select_all_youtube_desktop():
             )
         )
         return res.scalar()
+
+
+def top10_request_touch():
+    """
+    Топ 10 запросов на тачах
+        SELECT COUNT (request) AS count_request, request, platform
+        FROM yandex_images
+        WHERE platform='touch'
+        GROUP BY request, platform
+        ORDER BY count_request DESC
+        LIMIT 10
+    """
+    with sync_engine.connect() as conn:
+        res = conn.execute(
+            text(
+                "SELECT COUNT (request) AS count_request, request, platform \
+                FROM yandex_images \
+                WHERE platform='touch' \
+                GROUP BY request, platform \
+                ORDER BY count_request DESC \
+                LIMIT 10"
+            )
+        )
+        return res.all()
+
+
+def top10_request_desktop():
+    """
+    Топ 10 запросов на тачах
+        SELECT COUNT (request) AS count_request, request, platform
+        FROM yandex_images
+        WHERE platform='desktop'
+        GROUP BY request, platform
+        ORDER BY count_request DESC
+        LIMIT 10
+    """
+    with sync_engine.connect() as conn:
+        res = conn.execute(
+            text(
+                "SELECT COUNT (request) AS count_request, request, platform \
+                FROM yandex_images \
+                WHERE platform='desktop' \
+                GROUP BY request, platform \
+                ORDER BY count_request DESC \
+                LIMIT 10"
+            )
+        )
+        return res.all()

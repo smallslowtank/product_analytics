@@ -35,6 +35,17 @@ print('---***---')
 res = select_all_youtube_desktop()
 print(f'Проверка. На десктопах: {res}')
 
+print('---***---')
+print("Топ 10 запросов на тачах:")
+res = top10_request_touch()
+for i in res:
+    print(i)
+
+print('---***---')
+print("Топ 10 запросов на десктопах:")
+res = top10_request_desktop()
+for i in res:
+    print(i)
 
 
 
