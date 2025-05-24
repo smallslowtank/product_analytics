@@ -19,3 +19,9 @@
 python3 app/main.py
 ```
 Сами запросы находятся в файле app/queries.py
+
+### Дашборд DataLens
+
+https://datalens.yandex.cloud/dubyutvrhn4uz
+
+Датесет лежит в s3-хранилище и подключен к DataLens через YandexQuery
